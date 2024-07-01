@@ -36,6 +36,19 @@ def scrape_linkedin_profile(linkedin_profile_url: str, mock: bool=True):
             timeout=10,
             )
     data = response.json()
+
+    # filter out the data to remove the empty keys, values to save cost of tokens when sending the payload to GPT for querying
+
+    data = {
+        k: v
+        for k, v in data.items()
+        if v not in ([], "", None)
+        and k not in ["people_also_viewed", "certifications"]
+    }
+    if data.get("groups"):
+        for group_dict in data.get("groups"):
+            group_dict.pop("profile_pic_url")
+
     return data
 
 if __name__ == "__main__":

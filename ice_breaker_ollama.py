@@ -11,7 +11,7 @@ if __name__ == '__main__':
     """
 
     summary_prompt_tempate = PromptTemplate(input_variables=["information"], template=summary_template)
-    llm = Ollama(model="llama3")
+    llm = Ollama(model="llama3", temperature=0.9)
     chain = summary_prompt_tempate | llm
     linkdcin_data = scrape_linkedin_profile(linkedin_profile_url="https://www.linkedin.com/in/felix-yang-a61abb135/")
     res = chain.invoke(input={"information": linkdcin_data})
